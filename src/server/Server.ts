@@ -24,3 +24,13 @@ export class Server {
 		this.app.use(path, router);
 	}
 }
+
+export interface HttpRequest {
+	body: Record<string, unknown>;
+	params: Record<string, unknown>;
+	query: Record<string, unknown>;
+}
+
+export type HttpResponse = {
+	json: (body: Record<string, unknown>) => void;
+};

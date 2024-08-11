@@ -1,5 +1,5 @@
-import type { Request, Response } from "express";
 import { HealthCheckService } from "./HealthCheckService";
+import type { HttpRequest, HttpResponse } from "../Server";
 
 export class HealthCheckController {
 	private healthCheckService: HealthCheckService;
@@ -8,7 +8,7 @@ export class HealthCheckController {
 		this.healthCheckService = new HealthCheckService();
 	}
 
-	public getStatus(_req: Request, res: Response) {
+	public getStatus(_req: HttpRequest, res: HttpResponse) {
 		const status = this.healthCheckService.getStatus();
 		res.json(status);
 	}

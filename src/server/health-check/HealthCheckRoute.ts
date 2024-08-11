@@ -1,5 +1,6 @@
-import { Router } from "express";
+import { type Request, type Response, Router } from "express";
 import { HealthCheckController } from "./HealthCheckController";
+import type { HttpRequest, HttpResponse } from "../Server";
 
 /**
  * 1. Pasar instancia de express por construtor.
@@ -19,8 +20,19 @@ export class HealthCheckRoute {
 	private initializeRoutes() {
 		this.router.get(
 			"/",
-			// (req, res) => this.healthCheckController.getStatus(req, res),
-			this.healthCheckController.getStatus.bind(this.healthCheckController),
+			(req: Request, res: Response) => {
+				const adaptedReq: HttpRequest = {
+					body: req.body,
+					params: req.params,
+					query: req.query,
+				};
+				const adaptedRes: HttpResponse = {
+					json: (body) => res.json(body),
+				};
+
+				this.healthCheckController.getStatus(adaptedReq, adaptedRes);
+			},
+			// this.healthCheckController.getStatus.bind(this.healthCheckController),
 		);
 	}
 

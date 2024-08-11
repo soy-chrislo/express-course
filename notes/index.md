@@ -4,4 +4,13 @@
 
 - Cap 1: Entrypoint.
 - Cap 2: RESTClient and routing.
-- Cap 3: Linter
+- Cap 3: Linter, App and dependencies.
+- Cap 4: Abstraer métodos getter de Route para importación "dinámica".
+- Módulo variables de entorno.
+
+
+
+
+
+- Paradigma Imperativo. -> POO
+- Paradigma Declarativo. -> Funcional
