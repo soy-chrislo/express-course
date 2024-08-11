@@ -1,12 +1,12 @@
 import { type Request, type Response, Router } from "express";
 import { HealthCheckController } from "./HealthCheckController";
-import type { HttpRequest, HttpResponse } from "../Server";
+import type { HttpRequest, HttpResponse, Route } from "../Server";
 
 /**
  * 1. Pasar instancia de express por construtor.
  * 2. Crear Router y hacer un getter.
  */
-export class HealthCheckRoute {
+export class HealthCheckRoute implements Route {
 	private router: Router;
 	private healthCheckController: HealthCheckController;
 	private path = "/health-check";

@@ -34,3 +34,8 @@ export interface HttpRequest {
 export type HttpResponse = {
 	json: (body: Record<string, unknown>) => void;
 };
+
+export interface Route {
+	getPath: string;
+	getRouter: Router;
+}

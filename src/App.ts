@@ -1,5 +1,5 @@
 import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
-import { Server } from "./server/Server";
+import { type Route, Server } from "./server/Server";
 
 export class App {
 	private server: Server;
@@ -9,8 +9,12 @@ export class App {
 	}
 
 	public setupRoutes() {
-		const healthCheckRoute = new HealthCheckRoute();
-		this.server.use(healthCheckRoute.getPath, healthCheckRoute.getRouter);
+		const routes: Route[] = [new HealthCheckRoute()];
+
+		for (const route of routes) {
+			console.log(`Registrando ruta ${route.getPath}`);
+			this.server.use(route.getPath, route.getRouter);
+		}
 	}
 
 	public start() {
