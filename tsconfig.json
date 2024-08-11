@@ -1,0 +1,39 @@
+{
+	"compilerOptions": {
+		// Type-checking
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"strictFunctionTypes": true,
+		"strictPropertyInitialization": true,
+		"noImplicitThis": true,
+		"alwaysStrict": true,
+
+		// Recommended
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"removeComments": true,
+
+		// Bundle
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"incremental": false,
+		"noEmit": false,
+
+		// Module
+		"module": "ES2022",
+		"moduleResolution": "node",
+		"target": "ES2022",
+		"esModuleInterop": true,
+
+		// Paths
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules"]
+}
