@@ -34,6 +34,6 @@
 			"@/*": ["./*"]
 		}
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "postTranspilation.js"],
 	"exclude": ["node_modules"]
 }

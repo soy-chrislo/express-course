@@ -7,6 +7,7 @@
 - Cap 3: Linter, App and dependencies.
 - Cap 4: Abstraer métodos getter de Route para importación "dinámica".
 - Cap 5: Modulo variables de entorno.
+- Cap 6: Herramienta para agregar .js al final de los imports.
 
 
 

@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"build": "rm -rf dist && tsc --project tsconfig.json && tsconfig-replace-paths --project tsconfig.json && cp -r src/env/context dist/env/context",
+		"build": "rm -rf dist && tsc --project tsconfig.json && tsconfig-replace-paths --project tsconfig.json && node postTranspilation.js && cp -r src/variables/environments dist/variables/environments",
 		"start": "NODE_ENV=production node ./dist/index.js",
 		"dev": "NODE_ENV=development tsx src/index.ts",
 		"dev:watch": "nodemon --exec \"NODE_ENV=development tsx\" ./src/index.ts"

@@ -1,4 +1,4 @@
-import { App } from "./App.js";
+import { App } from "./App";
 
 // Facade pattern
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>

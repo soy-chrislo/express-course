@@ -1,6 +1,6 @@
-import { Environment } from "./variables/Environment.js";
-import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute.js";
-import { type Route, Server } from "./server/Server.js";
+import { Environment } from "./variables/Environment";
+import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
+import { type Route, Server } from "./server/Server";
 
 export class App {
 	private server: Server;
