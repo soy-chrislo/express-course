@@ -1,5 +1,5 @@
 import { type Request, type Response, Router } from "express";
-import { HealthCheckController } from "./HealthCheckController";
+import { HealthCheckController } from "./HealthCheckController.js";
 import type { HttpRequest, HttpResponse, Route } from "../Server";
 
 /**

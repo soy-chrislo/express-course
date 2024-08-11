@@ -1,5 +1,6 @@
-import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
-import { type Route, Server } from "./server/Server";
+import { Environment } from "./variables/Environment.js";
+import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute.js";
+import { type Route, Server } from "./server/Server.js";
 
 export class App {
 	private server: Server;
@@ -18,8 +19,9 @@ export class App {
 	}
 
 	public start() {
-		this.server.listen(3000, () =>
-			console.log("Servidor iniciado en el puerto 3000"),
+		const port = Environment.getInstance().getPort;
+		this.server.listen(port, () =>
+			console.log("Servidor iniciado en el puerto ", port),
 		);
 	}
 }

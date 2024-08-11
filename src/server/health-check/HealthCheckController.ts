@@ -1,4 +1,4 @@
-import { HealthCheckService } from "./HealthCheckService";
+import { HealthCheckService } from "./HealthCheckService.js";
 import type { HttpRequest, HttpResponse } from "../Server";
 
 export class HealthCheckController {
