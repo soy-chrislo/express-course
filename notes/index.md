@@ -3,4 +3,5 @@
 # Express Course
 
 - Cap 1: Entrypoint.
-- Linter and dev RESTClient.
+- Cap 2: RESTClient and routing.
+- Cap 3: Linter

@@ -2,6 +2,7 @@ import express, {
 	type Request,
 	type Response,
 	type Application,
+	type Router,
 } from "express";
 
 export class Server {
@@ -17,5 +18,9 @@ export class Server {
 
 	public get(path: string, callback: (req: Request, res: Response) => void) {
 		this.app.get(path, callback);
+	}
+
+	public use(path: string, router: Router) {
+		this.app.use(path, router);
 	}
 }
