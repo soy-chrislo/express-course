@@ -4,7 +4,9 @@ import express, {
 	type Application,
 	type Router,
 	type RequestHandler,
+	type NextFunction,
 } from "express";
+import { ErrorMiddleware } from "./middleware/ErrorMiddleware";
 
 export class Server {
 	private app: Application;
@@ -31,6 +33,13 @@ export class Server {
 
 	public setupMiddlewares() {
 		this.app.use(express.json());
+		// this.app.use(new ErrorMiddleware().handleError);
+		setTimeout(() => {
+			this.app.use(
+				(error: Error, req: Request, res: Response, next: NextFunction) =>
+					new ErrorMiddleware().handleError(error, req, res, next),
+			);
+		}, 0);
 	}
 }
 

@@ -13,7 +13,6 @@ export class Adapter {
 
 	public static adaptResponse(res: Response): HttpResponse {
 		return {
-			// ? res.json retorna Response de express.
 			json: (body: Record<string, unknown>) => res.json(body),
 			status: (code: number) => res.status(code),
 		};
