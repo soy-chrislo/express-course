@@ -34,10 +34,12 @@ export interface HttpRequest {
 	body: Record<string, unknown>;
 	params: Record<string, unknown>;
 	query: Record<string, unknown>;
+	headers: Record<string, unknown>;
 }
 
 export type HttpResponse = {
-	json: (body: Record<string, unknown>) => void;
+	json: (body: Record<string, unknown>) => HttpResponse;
+	status: (code: number) => HttpResponse;
 };
 
 export interface Route {

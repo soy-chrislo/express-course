@@ -7,4 +7,8 @@ GET http://{{host}}
 ###
 
 GET http://{{host}}/health-check
-# Authorization: Hola
+Authorization: Hola
+{
+  "name": "Chrislo",
+  "age": 99
+}

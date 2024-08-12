@@ -1,7 +1,8 @@
-import type { NextFunction, Request, Response } from "express";
+import type { NextFunction } from "express";
+import type { HttpRequest, HttpResponse } from "../Server";
 
 export class AuthMiddleware {
-	public authenticate(req: Request, res: Response, next: NextFunction) {
+	public authenticate(req: HttpRequest, res: HttpResponse, next: NextFunction) {
 		if (req.headers.authorization) {
 			next();
 		} else {

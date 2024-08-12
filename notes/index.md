@@ -8,7 +8,11 @@
 - Cap 4: Abstraer métodos getter de Route para importación "dinámica".
 - Cap 5: Modulo variables de entorno.
 - Cap 6: Herramienta para agregar .js al final de los imports.
-- Cap 7: Middlewares globales y de routes (tipado en middlewares propio y no de express)
+- Cap 7: Mejora en los adaptadores y middlewares globales y de ruta.
+- Cap 7.5: Implementación de middlewares globales y de rutas.
+- Cap 8: Validación de datos (body)
+- Cap 9: Manejo de errores.
+- Cap 10: Interacción con base de datos.
 
 
 

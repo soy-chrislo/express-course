@@ -1,11 +1,6 @@
-import {
-	type NextFunction,
-	type Request,
-	type Response,
-	Router,
-} from "express";
+import { Router } from "express";
 import { HealthCheckController } from "./HealthCheckController";
-import type { HttpRequest, HttpResponse, Route } from "../Server";
+import type { Route } from "../Server";
 import { AuthMiddleware } from "../middleware/AuthMiddleware";
 
 /**
@@ -26,21 +21,21 @@ export class HealthCheckRoute implements Route {
 	private initializeRoutes() {
 		this.router.get(
 			"/",
-			(req: Request, res: Response, next: NextFunction) =>
-				new AuthMiddleware().authenticate(req, res, next),
-			(req: Request, res: Response) => {
-				const adaptedReq: HttpRequest = {
-					body: req.body,
-					params: req.params,
-					query: req.query,
-				};
-				const adaptedRes: HttpResponse = {
-					json: (body) => res.json(body),
-				};
-
-				this.healthCheckController.getStatus(adaptedReq, adaptedRes);
-			},
-			// this.healthCheckController.getStatus.bind(this.healthCheckController),
+			new AuthMiddleware().authenticate,
+			// (req: Request, res: Response, next: NextFunction) => {
+			// 	new AuthMiddleware().authenticate(
+			// 		Adapter.adaptRequest(req),
+			// 		Adapter.adaptResponse(res),
+			// 		next,
+			// 	);
+			// },
+			this.healthCheckController.getStatus.bind(this.healthCheckController),
+			// (req: Request, res: Response) => {
+			// 	this.healthCheckController.getStatus(
+			// 		Adapter.adaptRequest(req),
+			// 		Adapter.adaptResponse(res),
+			// 	);
+			// },
 		);
 	}
 
