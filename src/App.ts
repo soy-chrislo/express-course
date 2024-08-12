@@ -2,6 +2,7 @@ import { Environment } from "./variables/Environment";
 import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
 import { type Route, Server } from "./server/Server";
 import { UsageMiddleware } from "./server/middleware/UsageMiddleware";
+import { UserRoute } from "./server/entity/user/UserRoute";
 
 export class App {
 	private server: Server;
@@ -11,7 +12,7 @@ export class App {
 	}
 
 	public setupRoutes() {
-		const routes: Route[] = [new HealthCheckRoute()];
+		const routes: Route[] = [new HealthCheckRoute(), new UserRoute()];
 
 		for (const route of routes) {
 			console.log(`Registrando ruta ${route.getPath}`);
@@ -21,6 +22,8 @@ export class App {
 
 	public setupMiddlewares() {
 		const usageMiddleware = new UsageMiddleware();
+		// this.server.use(express.json());
+		this.server.setupMiddlewares();
 		this.server.use(usageMiddleware.reportUsage);
 	}
 

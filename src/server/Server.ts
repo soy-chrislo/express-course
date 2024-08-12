@@ -28,6 +28,10 @@ export class Server {
 			this.app.use(handler);
 		}
 	}
+
+	public setupMiddlewares() {
+		this.app.use(express.json());
+	}
 }
 
 export interface HttpRequest {

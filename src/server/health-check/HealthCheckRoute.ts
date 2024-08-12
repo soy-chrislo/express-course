@@ -21,7 +21,7 @@ export class HealthCheckRoute implements Route {
 	private initializeRoutes() {
 		this.router.get(
 			"/",
-			new AuthMiddleware().authenticate,
+			// new AuthMiddleware().authenticate,
 			// (req: Request, res: Response, next: NextFunction) => {
 			// 	new AuthMiddleware().authenticate(
 			// 		Adapter.adaptRequest(req),

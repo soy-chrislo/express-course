@@ -8,6 +8,15 @@ GET http://{{host}}
 
 GET http://{{host}}/health-check
 Authorization: Hola
+
+
+###
+GET http://{{host}}/user
+
+###
+POST http://{{host}}/user HTTP/1.1
+content-type: application/json
+
 {
   "name": "Chrislo",
   "age": 99
