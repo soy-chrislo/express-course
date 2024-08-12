@@ -7,6 +7,7 @@ export class Main {
 		console.log("entrypoint de la aplicación");
 
 		const app = new App();
+		app.setupMiddlewares(); // Global middlewares first
 		app.setupRoutes();
 		app.start();
 	}

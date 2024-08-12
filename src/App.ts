@@ -1,6 +1,7 @@
 import { Environment } from "./variables/Environment";
 import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
 import { type Route, Server } from "./server/Server";
+import { UsageMiddleware } from "./server/middleware/UsageMiddleware";
 
 export class App {
 	private server: Server;
@@ -14,8 +15,13 @@ export class App {
 
 		for (const route of routes) {
 			console.log(`Registrando ruta ${route.getPath}`);
-			this.server.use(route.getPath, route.getRouter);
+			this.server.use(route.getRouter, route.getPath);
 		}
+	}
+
+	public setupMiddlewares() {
+		const usageMiddleware = new UsageMiddleware();
+		this.server.use(usageMiddleware.reportUsage);
 	}
 
 	public start() {

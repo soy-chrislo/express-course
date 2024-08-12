@@ -1,4 +1,4 @@
-@host = localhost:3000
+@host = localhost:3001
 
 ###
 
@@ -7,3 +7,4 @@ GET http://{{host}}
 ###
 
 GET http://{{host}}/health-check
+# Authorization: Hola

@@ -3,6 +3,7 @@ import express, {
 	type Response,
 	type Application,
 	type Router,
+	type RequestHandler,
 } from "express";
 
 export class Server {
@@ -20,8 +21,12 @@ export class Server {
 		this.app.get(path, callback);
 	}
 
-	public use(path: string, router: Router) {
-		this.app.use(path, router);
+	public use(handler: Router | RequestHandler, path?: string) {
+		if (path) {
+			this.app.use(path, handler);
+		} else {
+			this.app.use(handler);
+		}
 	}
 }
 

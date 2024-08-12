@@ -1,6 +1,12 @@
-import { type Request, type Response, Router } from "express";
+import {
+	type NextFunction,
+	type Request,
+	type Response,
+	Router,
+} from "express";
 import { HealthCheckController } from "./HealthCheckController";
 import type { HttpRequest, HttpResponse, Route } from "../Server";
+import { AuthMiddleware } from "../middleware/AuthMiddleware";
 
 /**
  * 1. Pasar instancia de express por construtor.
@@ -20,6 +26,8 @@ export class HealthCheckRoute implements Route {
 	private initializeRoutes() {
 		this.router.get(
 			"/",
+			(req: Request, res: Response, next: NextFunction) =>
+				new AuthMiddleware().authenticate(req, res, next),
 			(req: Request, res: Response) => {
 				const adaptedReq: HttpRequest = {
 					body: req.body,
