@@ -1,9 +1,15 @@
 import { z } from "zod";
 
-export interface UserEntity {
+export class UserEntity {
 	id: number;
 	name: string;
 	age: number;
+
+	constructor(id: number, name: string, age: number) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
 }
 
 export type UserDto = Partial<Omit<UserEntity, "id">>;

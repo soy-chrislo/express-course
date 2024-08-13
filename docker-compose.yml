@@ -1,0 +1,19 @@
+services:
+  database:
+    container_name: express_db
+    image: postgres:16-alpine
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: "7Z7(9f<3ti?a>p>w(t078^NAVAW{,£N,fp%[u(V&0x7n^n"
+      POSTGRES_DB: app
+    volumes:
+      - ./postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./postgres/script:/docker-entrypoint-initdb.d/
+      - ./postgres/logs:/mnt/log
+      - express_db:/var/lib/postgresql/data
+
+volumes:
+  express_db:

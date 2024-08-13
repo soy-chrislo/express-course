@@ -8,6 +8,7 @@ import { UserController } from "./UserController";
 import type { Route } from "@/server/Server";
 import { UserSchema } from "./User";
 import { DtoMiddleware } from "@/server/middleware/DtoMiddleware";
+import type { DatabaseModule } from "@/database/DatabaseModule";
 
 /**
  * 1. Pasar instancia de express por construtor.
@@ -18,9 +19,9 @@ export class UserRoute implements Route {
 	private userController: UserController;
 	private path = "/user";
 
-	constructor() {
+	constructor(databaseModule: DatabaseModule) {
 		this.router = Router();
-		this.userController = new UserController();
+		this.userController = new UserController(databaseModule);
 		this.initializeRoutes();
 	}
 
