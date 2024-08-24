@@ -32,4 +32,21 @@ export class DtoMiddleware {
 			next(error);
 		}
 	}
+
+	public validateQuery(
+		req: Request,
+		_res: Response,
+		next: NextFunction,
+		schema: ZodSchema<unknown>,
+	) {
+		try {
+			const { query } = req;
+			console.log({ query });
+			schema.parse(query);
+			next();
+		} catch (error) {
+			console.log({ error });
+			next(error);
+		}
+	}
 }

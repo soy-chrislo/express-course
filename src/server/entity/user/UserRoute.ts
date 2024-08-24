@@ -6,9 +6,10 @@ import {
 } from "express";
 import { UserController } from "./UserController";
 import type { Route } from "@/server/Server";
-import { UserSchema } from "./User";
+import { UserQuerySchema, UserSchema, UserUpdateSchema } from "./User";
 import { DtoMiddleware } from "@/server/middleware/DtoMiddleware";
 import type { DatabaseModule } from "@/database/DatabaseModule";
+import { idSchema } from "@/server/middleware/Schemas";
 
 /**
  * 1. Pasar instancia de express por construtor.
@@ -26,12 +27,40 @@ export class UserRoute implements Route {
 	}
 
 	private initializeRoutes() {
-		this.router.get("/", this.userController.getUser.bind(this.userController));
+		// * GET /user?id=1 | /user
+		this.router.get(
+			"/",
+			(req: Request, res: Response, next: NextFunction) =>
+				DtoMiddleware.getInstance().validateQuery(
+					req,
+					res,
+					next,
+					UserQuerySchema,
+				),
+			this.userController.getUser.bind(this.userController),
+		);
+
+		// * POST /user
 		this.router.post(
 			"/",
 			(req: Request, res: Response, next: NextFunction) =>
 				DtoMiddleware.getInstance().validateDto(req, res, next, UserSchema),
 			this.userController.createUser.bind(this.userController),
+		);
+
+		// * PATCH /user?id=1 { name: "Chrislo" }
+		this.router.patch(
+			"/",
+			(req: Request, res: Response, next: NextFunction) =>
+				DtoMiddleware.getInstance().validateQuery(req, res, next, idSchema),
+			(req: Request, res: Response, next: NextFunction) =>
+				DtoMiddleware.getInstance().validateDto(
+					req,
+					res,
+					next,
+					UserUpdateSchema,
+				),
+			this.userController.updateUser.bind(this.userController),
 		);
 	}
 

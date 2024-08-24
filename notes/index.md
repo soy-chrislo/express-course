@@ -13,6 +13,10 @@
 - Cap 8: Validación de datos (body)
 - Cap 9: Manejo de errores.
 - Cap 10: Interacción con base de datos.
+- Cap 11: Bases de datos #2
+- Normalización de respuestas.
+  - Generalización 404
+  - ¿Por que usar siempre return en res.json?
 
 
 
