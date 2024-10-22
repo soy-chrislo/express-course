@@ -16,12 +16,14 @@ export class UserDomain {
 export type UserDto = Partial<UserDomain>;
 
 // Joi & Zod
+// POST
 export const UserSchema = z.object({
 	name: z.string(),
 	age: z.number(),
 });
 
 // En query, todo es string.
+// GET
 export const UserQuerySchema = z.object({
 	id: z
 		.string()
@@ -33,6 +35,7 @@ export const UserQuerySchema = z.object({
 	mode: z.enum(["find", "findOne"]).default("find"),
 });
 
+// PATCH
 export const UserUpdateSchema = z.object({
 	name: z.string().optional(),
 	age: z.number().optional(),

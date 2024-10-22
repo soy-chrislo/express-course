@@ -14,6 +14,9 @@
 - Cap 9: Manejo de errores.
 - Cap 10: Interacción con base de datos.
 - Cap 11: Bases de datos #2
+- Cap 12: Bases de datos #3
+- Cap 13: Bases de datos #4
+  - Errores personalizados, correcta abstracción de DatabaseModules (DatabaseDrive también puede ejecutar query) y PATCH.
 - Normalización de respuestas.
   - Generalización 404
   - ¿Por que usar siempre return en res.json?

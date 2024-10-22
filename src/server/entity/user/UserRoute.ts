@@ -1,15 +1,16 @@
+import type { DatabaseModule } from "@/database/DatabaseModule";
+import type { RepositoryProvider } from "@/database/Repository";
+import type { Route } from "@/server/Server";
+import { DtoMiddleware } from "@/server/middleware/DtoMiddleware";
+import { idSchema } from "@/server/middleware/Schemas";
 import {
 	type NextFunction,
 	type Request,
 	type Response,
 	Router,
 } from "express";
-import { UserController } from "./UserController";
-import type { Route } from "@/server/Server";
 import { UserQuerySchema, UserSchema, UserUpdateSchema } from "./User";
-import { DtoMiddleware } from "@/server/middleware/DtoMiddleware";
-import type { DatabaseModule } from "@/database/DatabaseModule";
-import { idSchema } from "@/server/middleware/Schemas";
+import { UserController } from "./UserController";
 
 /**
  * 1. Pasar instancia de express por construtor.
@@ -20,14 +21,15 @@ export class UserRoute implements Route {
 	private userController: UserController;
 	private path = "/user";
 
-	constructor(databaseModule: DatabaseModule) {
+	constructor(repositoryProvider: RepositoryProvider) {
 		this.router = Router();
-		this.userController = new UserController(databaseModule);
+		this.userController = new UserController(repositoryProvider);
 		this.initializeRoutes();
 	}
 
 	private initializeRoutes() {
 		// * GET /user?id=1 | /user
+		// TODO: Agregar filtro (ya) y paginación (pendiente).
 		this.router.get(
 			"/",
 			(req: Request, res: Response, next: NextFunction) =>
@@ -61,6 +63,14 @@ export class UserRoute implements Route {
 					UserUpdateSchema,
 				),
 			this.userController.updateUser.bind(this.userController),
+		);
+
+		// * DELETE /user?id=1
+		this.router.delete(
+			"/",
+			(req: Request, res: Response, next: NextFunction) =>
+				DtoMiddleware.getInstance().validateQuery(req, res, next, idSchema),
+			this.userController.deleteUser.bind(this.userController),
 		);
 	}
 

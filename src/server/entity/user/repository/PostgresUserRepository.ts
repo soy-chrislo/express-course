@@ -1,10 +1,21 @@
+import type { DatabaseActions } from "@/database/DatabaseActions";
+import { PostgresDriver } from "@/database/PostgresDriver";
 import type { Repository } from "@/database/Repository";
-import { UserDomain, type UserDto } from "./User";
-import type { DatabaseModule } from "@/database/DatabaseModule";
 import type { QueryResult } from "pg";
+import { UserDomain, type UserDto } from "../User";
 
-export class UserRepository implements Repository<UserDto, UserDomain> {
-	constructor(private dbModule: DatabaseModule) {}
+export class PostgresUserRepository implements Repository<UserDto, UserDomain> {
+	private postgresDriver: PostgresDriver;
+
+	constructor(databaseDriver: DatabaseActions) {
+		if (!(databaseDriver instanceof PostgresDriver)) {
+			throw new Error(
+				`Invalid database driver, expected PostgresDriver, received: ${typeof databaseDriver}`,
+			);
+		}
+
+		this.postgresDriver = databaseDriver;
+	}
 
 	async create(userDto: UserDto): Promise<UserDomain> {
 		try {
@@ -18,15 +29,15 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 
 			const values = [name ?? "not defined", age ?? 0];
 
-			const result = (await this.dbModule.query(query, values)) as QueryResult;
+			const result = (await this.postgresDriver.query(
+				query,
+				values,
+			)) as QueryResult;
 
 			if (result.rows.length === 0) throw new Error("Failed to create user");
 
-			return new UserDomain(
-				result.rows[0].id,
-				result.rows[0].name,
-				result.rows[0].age,
-			);
+			const user = result.rows[0];
+			return new UserDomain(user.id, user.name, user.age);
 		} catch (error) {
 			console.log(error);
 			throw error;
@@ -56,7 +67,10 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 			RETURNING id, name, age
 		`;
 
-		const result = (await this.dbModule.query(query, values)) as QueryResult;
+		const result = (await this.postgresDriver.query(
+			query,
+			values,
+		)) as QueryResult;
 
 		if (result.rows.length === 0) throw new Error("Failed to update user");
 
@@ -67,8 +81,17 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 		);
 	}
 
-	async delete(id: string): Promise<void> {
-		throw new Error("Method not implemented.");
+	async delete(id: number): Promise<UserDomain> {
+		const result = (await this.postgresDriver.query(
+			"SELECT * FROM users WHERE id = $1",
+			[id],
+		)) as QueryResult;
+		const user = result.rows;
+		if (user.length === 0) {
+			throw new Error(`User with id ${id} not found`);
+		}
+		await this.postgresDriver.query("DELETE FROM users WHERE id = $1", [id]);
+		return user[0];
 	}
 
 	async find(
@@ -90,7 +113,10 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 			WHERE ${whereClauses};
 		`;
 
-		const result = (await this.dbModule.query(query, values)) as QueryResult;
+		const result = (await this.postgresDriver.query(
+			query,
+			values,
+		)) as QueryResult;
 		if (result.rows.length === 0) return [];
 
 		return result.rows.map((row) => new UserDomain(row.id, row.name, row.age));
@@ -116,7 +142,10 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 			LIMIT 1;
 		`;
 
-		const result = (await this.dbModule.query(query, values)) as QueryResult;
+		const result = (await this.postgresDriver.query(
+			query,
+			values,
+		)) as QueryResult;
 		if (result.rows.length === 0) return null;
 
 		return new UserDomain(
@@ -132,7 +161,7 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 			FROM users;
 		`;
 
-		const result = (await this.dbModule.query(query, [])) as QueryResult;
+		const result = (await this.postgresDriver.query(query, [])) as QueryResult;
 		return result.rows.map((row) => new UserDomain(row.id, row.name, row.age));
 	}
 }

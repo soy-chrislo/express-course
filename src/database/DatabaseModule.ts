@@ -1,9 +1,9 @@
-import type { DatabaseDriver } from "./Database";
+import type { DatabaseActions } from "./DatabaseActions.ts";
 
 export class DatabaseModule {
-	private driver: DatabaseDriver;
+	private driver: DatabaseActions;
 
-	constructor(driver: DatabaseDriver) {
+	constructor(driver: DatabaseActions) {
 		this.driver = driver;
 	}
 

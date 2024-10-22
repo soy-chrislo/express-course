@@ -1,14 +1,14 @@
+import type { RepositoryProvider } from "@/database/Repository";
 import type { HttpRequest, HttpResponse } from "@/server/Server";
 import type { NextFunction } from "express";
-import { UserService } from "./UserService";
-import type { DatabaseModule } from "@/database/DatabaseModule";
 import type { UserDto } from "./User";
+import { UserService } from "./UserService";
 
 export class UserController {
 	private userService: UserService;
 
-	constructor(databaseModule: DatabaseModule) {
-		this.userService = new UserService(databaseModule);
+	constructor(repositoryProvider: RepositoryProvider) {
+		this.userService = new UserService(repositoryProvider);
 	}
 
 	public async getUser(
@@ -48,8 +48,7 @@ export class UserController {
 	public async createUser(req: HttpRequest, res: HttpResponse) {
 		const { body } = req as { body: UserDto };
 		const user: UserDto = {
-			name: body.name,
-			age: body.age,
+			...body,
 		};
 		const result = await this.userService.createUser(user);
 		res.json({ user: result });
@@ -64,6 +63,12 @@ export class UserController {
 			age: body.age,
 		};
 		const result = await this.userService.updateUser(user);
+		res.json({ user: result });
+	}
+
+	public async deleteUser(req: HttpRequest, res: HttpResponse) {
+		const { id } = req.query;
+		const result = await this.userService.deleteUser({ id: Number(id) });
 		res.json({ user: result });
 	}
 }

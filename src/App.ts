@@ -1,20 +1,28 @@
-import { Environment } from "./variables/Environment";
-import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
-import { type Route, Server } from "./server/Server";
-import { UsageMiddleware } from "./server/middleware/UsageMiddleware";
-import { UserRoute } from "./server/entity/user/UserRoute";
+import type { DatabaseActions } from "./database/DatabaseActions";
 import { DatabaseModule } from "./database/DatabaseModule";
-import type { DatabaseDriver } from "./database/Database";
 import { PostgresDriver } from "./database/PostgresDriver";
+import type { RepositoryProvider } from "./database/Repository";
+import { PostgresProvider } from "./database/provider/PostgresProvider";
+import { type Route, Server } from "./server/Server";
+import { UserRoute } from "./server/entity/user/UserRoute";
+import { PostgresUserRepository } from "./server/entity/user/repository/PostgresUserRepository";
+import { HealthCheckRoute } from "./server/health-check/HealthCheckRoute";
+import { UsageMiddleware } from "./server/middleware/UsageMiddleware";
+import { Environment } from "./variables/Environment";
 
 export class App {
 	private server: Server;
-	private databaseDriver: DatabaseDriver;
+	private databaseDriver: DatabaseActions;
 	private databaseModule: DatabaseModule;
+	private repositoryProvider: RepositoryProvider;
 
 	constructor() {
 		this.server = new Server();
 		this.databaseDriver = new PostgresDriver();
+		this.repositoryProvider = new PostgresProvider(
+			// Como argumento a repository databaseDriver vs databaseModule.
+			new PostgresUserRepository(this.databaseDriver),
+		);
 		this.databaseModule = new DatabaseModule(this.databaseDriver);
 	}
 
@@ -35,7 +43,7 @@ export class App {
 	public setupRoutes() {
 		const routes: Route[] = [
 			new HealthCheckRoute(),
-			new UserRoute(this.databaseModule),
+			new UserRoute(this.repositoryProvider),
 		];
 
 		for (const route of routes) {

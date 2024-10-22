@@ -1,9 +1,9 @@
 import pg from "pg";
-import type { DatabaseDriver } from "./Database";
+import type { DatabaseActions } from "./DatabaseActions.ts";
 
 const { Pool } = pg;
 
-export class PostgresDriver implements DatabaseDriver {
+export class PostgresDriver implements DatabaseActions {
 	private pool: pg.Pool;
 
 	constructor() {

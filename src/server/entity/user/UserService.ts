@@ -1,12 +1,17 @@
-import type { DatabaseModule } from "@/database/DatabaseModule";
-import { UserRepository } from "./UserRepository";
+import type { Repository, RepositoryProvider } from "@/database/Repository";
 import type { UserDomain, UserDto } from "./User";
 
 export class UserService {
-	private userRepository: UserRepository;
+	private userRepository: Repository<UserDto, UserDomain>;
 
-	constructor(databaseModule: DatabaseModule) {
-		this.userRepository = new UserRepository(databaseModule);
+	constructor(repositoryProvider: RepositoryProvider) {
+		this.userRepository = repositoryProvider.userRepository;
+	}
+
+	async deleteUser(user: UserDto): Promise<UserDomain> {
+		const userId = user.id;
+		if (userId === undefined) throw new Error("No id provided");
+		return await this.userRepository.delete(userId);
 	}
 
 	async createUser(user: UserDto): Promise<UserDomain> {
