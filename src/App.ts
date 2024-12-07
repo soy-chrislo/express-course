@@ -20,7 +20,6 @@ export class App {
 		this.server = new Server();
 		this.databaseDriver = new PostgresDriver();
 		this.repositoryProvider = new PostgresProvider(
-			// Como argumento a repository databaseDriver vs databaseModule.
 			new PostgresUserRepository(this.databaseDriver),
 		);
 		this.databaseModule = new DatabaseModule(this.databaseDriver);
@@ -28,16 +27,7 @@ export class App {
 
 	public async setupDatabase() {
 		await this.databaseModule.connect();
-		await this.databaseModule.query(
-			`
-			CREATE TABLE IF NOT EXISTS users (
-				id SERIAL PRIMARY KEY,
-				name VARCHAR(255) NOT NULL,
-				age INTEGER NOT NULL
-			);
-			`,
-			[],
-		);
+		await this.databaseModule.setup();
 	}
 
 	public setupRoutes() {

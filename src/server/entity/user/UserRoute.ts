@@ -1,4 +1,3 @@
-import type { DatabaseModule } from "@/database/DatabaseModule";
 import type { RepositoryProvider } from "@/database/Repository";
 import type { Route } from "@/server/Server";
 import { DtoMiddleware } from "@/server/middleware/DtoMiddleware";

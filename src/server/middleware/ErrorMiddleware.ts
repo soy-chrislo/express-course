@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { ZodError } from "zod";
 import { AppError } from "../helper/Error";
 
 export class ErrorMiddleware {
@@ -8,6 +9,11 @@ export class ErrorMiddleware {
 		res: Response,
 		_next: NextFunction,
 	) {
+		if (error instanceof ZodError) {
+			// Tenemos la libertad de personalizar zod
+			return res.status(400).json({ message: "un error de zod" });
+		}
+
 		if (!(error instanceof AppError)) {
 			return res.status(500).json({
 				success: false,

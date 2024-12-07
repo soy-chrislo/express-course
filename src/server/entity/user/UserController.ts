@@ -54,7 +54,11 @@ export class UserController {
 		res.json({ user: result });
 	}
 
-	public async updateUser(req: HttpRequest, res: HttpResponse) {
+	public async updateUser(
+		req: HttpRequest,
+		res: HttpResponse,
+		next: NextFunction,
+	) {
 		const { id } = req.query;
 		const { body } = req as { body: UserDto };
 		const user: UserDto = {
@@ -62,8 +66,13 @@ export class UserController {
 			name: body.name,
 			age: body.age,
 		};
-		const result = await this.userService.updateUser(user);
-		res.json({ user: result });
+
+		try {
+			const result = await this.userService.updateUser(user);
+			res.json({ user: result });
+		} catch (error) {
+			return next(error);
+		}
 	}
 
 	public async deleteUser(req: HttpRequest, res: HttpResponse) {

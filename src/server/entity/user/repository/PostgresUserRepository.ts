@@ -1,6 +1,7 @@
 import type { DatabaseActions } from "@/database/DatabaseActions";
 import { PostgresDriver } from "@/database/PostgresDriver";
 import type { Repository } from "@/database/Repository";
+import { EntityNotFoundError } from "@/server/helper/Error";
 import type { QueryResult } from "pg";
 import { UserDomain, type UserDto } from "../User";
 
@@ -60,6 +61,20 @@ export class PostgresUserRepository implements Repository<UserDto, UserDomain> {
 
 		if (fields.length === 0) throw new Error("No fields to update");
 
+		const selectQuery = `
+			SELECT id, name, age
+			FROM users
+			WHERE id = $1;
+		`;
+
+		const selectResult = (await this.postgresDriver.query(selectQuery, [
+			dto.id,
+		])) as QueryResult;
+
+		if (selectResult.rows.length === 0) {
+			throw new EntityNotFoundError(["User", dto.id]);
+		}
+
 		const query = `
 			UPDATE users
 			SET ${fields.join(", ")}
@@ -72,7 +87,10 @@ export class PostgresUserRepository implements Repository<UserDto, UserDomain> {
 			values,
 		)) as QueryResult;
 
-		if (result.rows.length === 0) throw new Error("Failed to update user");
+		// * OLD -> if (result.rows.length === 0) throw new Error("Failed to update user");
+		if (result.rows.length === 0) {
+			throw new Error(`Failed to update user with id ${dto.id}`);
+		}
 
 		return new UserDomain(
 			result.rows[0].id,

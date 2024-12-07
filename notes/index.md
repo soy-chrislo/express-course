@@ -16,10 +16,15 @@
 - Cap 11: Bases de datos #2
 - Cap 12: Bases de datos #3
 - Cap 13: Bases de datos #4
-  - Errores personalizados, correcta abstracción de DatabaseModules (DatabaseDrive también puede ejecutar query) y PATCH.
+  - Errores personalizados, correcta abstracción de DatabaseModules (DatabaseDrive también puede ejecutar query) y PATCH. Respuestas a errores
 - Normalización de respuestas.
   - Generalización 404
   - ¿Por que usar siempre return en res.json?
+- Cap 14: Autenticación
+  - Modificar UserDTO para agregar password.
+    - Actualizar los schemas.
+  - Abstraer la inicialización de las bases de datos a sus origenes.
+- Paginación a GET
 
 
 

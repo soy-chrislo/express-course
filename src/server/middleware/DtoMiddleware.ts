@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
-import type { ZodSchema } from "zod";
+import { ZodError, type ZodSchema } from "zod";
 
 /**
  * 1. Singleton.

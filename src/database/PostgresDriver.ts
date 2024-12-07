@@ -27,4 +27,16 @@ export class PostgresDriver implements DatabaseActions {
 	async query(query: string, values: unknown[]): Promise<unknown> {
 		return await this.pool.query(query, values);
 	}
+
+	async setup(): Promise<void> {
+		const query = `
+			CREATE TABLE IF NOT EXISTS users (
+				id SERIAL PRIMARY KEY,
+				name VARCHAR(255) NOT NULL,
+				age INT NOT NULL
+			)
+		`;
+
+		await this.query(query, []);
+	}
 }

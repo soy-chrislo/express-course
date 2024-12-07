@@ -20,3 +20,9 @@ export class ResourceNotFoundError extends AppError {
 		super("Resource not found", 404, "RESOURCE_NOT_FOUND", details);
 	}
 }
+
+export class EntityNotFoundError extends AppError {
+	constructor(details: Array<unknown>) {
+		super("Entity not found", 404, "ENTITY_NOT_FOUND", details);
+	}
+}

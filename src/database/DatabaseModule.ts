@@ -7,6 +7,10 @@ export class DatabaseModule {
 		this.driver = driver;
 	}
 
+	async setup(): Promise<void> {
+		await this.driver.setup();
+	}
+
 	async connect(): Promise<void> {
 		await this.driver.connect();
 	}
@@ -16,6 +20,14 @@ export class DatabaseModule {
 	}
 
 	async query(query: string, values: unknown[]): Promise<unknown> {
-		return await this.driver.query(query, values);
+		try {
+			return await this.driver.query(query, values);
+		} catch (error) {
+			console.error(
+				`Missmatch query error with the database driver ${this.driver.constructor.name}`,
+				error,
+			);
+			throw error;
+		}
 	}
 }
