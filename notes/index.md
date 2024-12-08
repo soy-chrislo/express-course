@@ -27,6 +27,9 @@
 - Paginación a GET
 
 
+- Adaptar User a Sqlite (¿por qué no se puede usar returning?)
+- Abstraer el provider de postgres para que se utilice en todos los drivers.
+- Terminar la demostración con usuario pero SQLite.
 
 
 
