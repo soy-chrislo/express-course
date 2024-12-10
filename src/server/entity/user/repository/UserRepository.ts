@@ -16,7 +16,7 @@ export class UserRepository implements Repository<UserDto, UserDomain> {
 		return await this.userRepository.update(entity);
 	}
 
-	async delete(id: number): Promise<UserDomain> {
+	async delete(id: string): Promise<UserDomain> {
 		return await this.userRepository.delete(id);
 	}
 

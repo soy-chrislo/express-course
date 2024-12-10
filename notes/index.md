@@ -27,11 +27,15 @@
 - Paginación a GET
 
 
-- Adaptar User a Sqlite (¿por qué no se puede usar returning?)
-- Abstraer el provider de postgres para que se utilice en todos los drivers.
-- Terminar la demostración con usuario pero SQLite.
+- Adaptar User a Sqlite (¿por qué no se puede usar returning?) CHECK
+- Abstraer el provider de postgres para que se utilice en todos los drivers. CHECK
+- Terminar la demostración con usuario pero SQLite. CHECK
 
+- DatabaseProvider
+- INSERT INTO users (id, name, age) -> Hacerlo dinamico a las keys del objeto en SqliteUserRepository
 
+- Tipado post zod
+- Terminar la demostración con usuario pero SQLite. (AGREGAR TESTING)
 
 - Paradigma Imperativo. -> POO
 - Paradigma Declarativo. -> Funcional

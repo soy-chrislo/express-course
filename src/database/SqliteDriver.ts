@@ -1,5 +1,5 @@
 import type { DatabaseActions } from "./DatabaseActions.ts";
-import { Database } from "sqlite3";
+import { Database, type RunResult } from "sqlite3";
 
 export class SqliteDriver implements DatabaseActions {
   private db: Database;
@@ -32,27 +32,52 @@ export class SqliteDriver implements DatabaseActions {
   }
 
   async query(query: string, values: unknown[]): Promise<unknown> {
-    const isSelect = query.trim().toLowerCase().startsWith("select");
+    const sql = query.trim().toLowerCase();
 
-    if (isSelect) {
-      this.db.all(query, values, (err, rows) => {
-        if (err) {
-          console.error("Error running the query", err.message);
-          return err;
+    /**
+     * Todos se pueden usar para cualquier propósito pero las respuestas son diferentes.
+     */
+    return new Promise((resolve, reject) => {
+      if (sql.startsWith("select")) {
+        if (sql.includes("limit 1")) {
+          // * Un solo objeto o `undefined`. (SELECT ... LIMIT 1)
+          /**
+           * Si no se usa LIMIT 1 (explicitamente), retorna solo el primer objeto.
+           */
+          this.db.get(query, values, (err, row) => {
+            if (err) {
+              console.error("Error running query:", err);
+              return reject(err);
+            }
+            resolve(row);
+          });
+        } else {
+          // * Array de objetos o vacío. (SELECT ...)
+          this.db.all(query, values, (err, rows) => {
+            if (err) {
+              console.error("Error running query:", err);
+              return reject(err);
+            }
+            resolve(rows);
+          });
         }
-        return rows;
-      })
-    }
-
-    this.db.run(query, values, (error) => {
-      if (error) {
-        console.error("Error running the query", error.message);
-        return error;
+      } else {
+        // * Ningún dato devuelto; solo estado. (INSERT, UPDATE, DELETE, CREATE TABLE)
+        /**
+         * Si se usa SELECT, no retornará nada.
+         */
+        this.db.run(query, values, function (this: RunResult, err: Error) {
+          if (err) {
+            console.error("Error running query:", err);
+            return reject(err);
+          }
+          resolve({
+            lastID: this.lastID,
+            changes: this.changes,
+          });
+        });
       }
-      console.log("Query executed successfully.");
-      return null;
-    })
-    return null;
+    });
   }
 
   async setup(): Promise<void> {
@@ -60,7 +85,8 @@ export class SqliteDriver implements DatabaseActions {
       CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        age INTEGER NOT NULL
+        age INTEGER NOT NULL,
+        password TEXT NOT NULL
       )
     `;
     await this.query(query, []);

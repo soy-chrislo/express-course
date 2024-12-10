@@ -62,7 +62,7 @@ export class UserController {
 		const { id } = req.query;
 		const { body } = req as { body: UserDto };
 		const user: UserDto = {
-			id: Number(id),
+			id: id,
 			name: body.name,
 			age: body.age,
 		};
@@ -77,7 +77,7 @@ export class UserController {
 
 	public async deleteUser(req: HttpRequest, res: HttpResponse) {
 		const { id } = req.query;
-		const result = await this.userService.deleteUser({ id: Number(id) });
+		const result = await this.userService.deleteUser({ id: id });
 		res.json({ user: result });
 	}
 }

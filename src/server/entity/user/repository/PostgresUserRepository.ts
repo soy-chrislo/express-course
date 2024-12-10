@@ -21,7 +21,10 @@ export class PostgresUserRepository implements Repository<UserDto, UserDomain> {
 	async create(userDto: UserDto): Promise<UserDomain> {
 		try {
 			const { name, age } = userDto;
-
+			// ! INCOMPLETO: Falta integración password
+			// Codificación - Decodificación -> Base64
+			// Cifrado - Descrifrar -> Hash (SHA256)
+			// Encriptado - Desencriptado -> RSA
 			const query = `
 				INSERT INTO users (name, age)
 				VALUES ($1, $2)
@@ -99,7 +102,7 @@ export class PostgresUserRepository implements Repository<UserDto, UserDomain> {
 		);
 	}
 
-	async delete(id: number): Promise<UserDomain> {
+	async delete(id: string): Promise<UserDomain> {
 		const result = (await this.postgresDriver.query(
 			"SELECT * FROM users WHERE id = $1",
 			[id],

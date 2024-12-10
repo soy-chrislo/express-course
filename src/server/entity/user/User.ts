@@ -1,21 +1,23 @@
 import { z } from "zod";
 
 export class UserDomain {
-	id: number;
+	id: string;
 	name: string;
 	age: number;
-	password: string;
 
-	constructor(id: number, name: string, age: number, password: string) {
+	constructor(id: string, name: string, age: number) {
 		this.id = id;
 		this.name = name;
 		this.age = age;
-		this.password = password;
+	}
+
+	getUserCredentials() {
+		throw new Error("Not implemented yet")
 	}
 }
 
 // export type UserDto = Partial<Omit<UserDomain, "id">>;
-export type UserDto = Partial<UserDomain>;
+export type UserDto = Partial<Omit<UserDomain, "getUserCredentials">>;
 
 // POST
 export const UserSchema = z.object({
@@ -33,8 +35,7 @@ export const UserSchema = z.object({
 export const UserQuerySchema = z.object({
 	id: z
 		.string()
-		.regex(/^\d+$/)
-		.transform((value) => Number.parseInt(value, 10))
+		.uuid()
 		.optional(),
 	name: z.string().optional(),
 	age: z.string().optional(),
